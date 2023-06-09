@@ -9,6 +9,9 @@ const { name } = require("ejs");
 
 const _ = require("lodash")
 
+
+
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -69,14 +72,14 @@ const defaultItems = [item1,item2,item3]
     const customListName = _.capitalize(req.params.customListName)
 
     try{
-      foundList = await List.findOne({name : customListName}).exec()
+      const foundList = await List.findOne({name : customListName}).exec()
       // console.log(foundList)
       if(foundList){
         console.log("List exists")
         // console.log(foundList)
         res.render("list", {listTitle: foundList.name, newListItems: await foundList.items});
       } else{
-        list = new List ({
+        const list = new List ({
           name: customListName,
           items: defaultItems
         })
@@ -144,7 +147,7 @@ const defaultItems = [item1,item2,item3]
         } else{
           // Model.findOneAndUpdate({name:listName}, { $pull: { items:{_id:checkedItemId} }} )
           try{
-          deleteItem = await List.findOne({name:listName})
+          const deleteItem = await List.findOne({name:listName})
           deleteItem.items.pull({ _id: checkedItemId }); 
           deleteItem.save()
           console.log("Successfully deleted")
@@ -162,10 +165,11 @@ const defaultItems = [item1,item2,item3]
   })
 
  
+  const port = process.env.PORT
+  if(port == null || port == "" ) { port = 3000 }
 
 
-
-  app.listen(3000, () => {
-    console.log("Server started on port 3000");
+  app.listen(port , () => {
+    console.log("Server started on port " + port);
   });
 }
