@@ -165,11 +165,11 @@ const defaultItems = [item1,item2,item3]
   })
 
  
-  const port = process.env.PORT
-  if(port == null || port == "" ) { port = 3000 }
+  const externalPort = process.env.PORT
+  const port = 3000 
 
 
-  app.listen(port , () => {
-    console.log("Server started on port " + port);
+  app.listen(port || externalPort , () => {
+    console.log("Server started on port " + externalPort);
   });
 }
